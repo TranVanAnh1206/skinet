@@ -16,10 +16,13 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-        builder.Services.AddDbContext<StoreContext>(opt => {
+        builder.Services.AddDbContext<StoreContext>(opt =>
+        {
             opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
         });
-        builder.Services.AddScoped<IProductRepository, ProductRepository>();    
+        builder.Services.AddScoped<IProductRepository, ProductRepository>();
+        builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         var app = builder.Build();
 
@@ -29,6 +32,8 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseStaticFiles();
 
         app.UseAuthorization();
 
