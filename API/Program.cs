@@ -28,6 +28,8 @@ public class Program
 
         app.UseStaticFiles();
 
+        app.UseCors("CorsPolicy");
+
         app.UseAuthorization();
 
 
